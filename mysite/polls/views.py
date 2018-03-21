@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse, Http404
-from .models import Question
+from .models import Question, Chart
 from django.template import loader
 
 
@@ -32,4 +32,11 @@ def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
 
 def charts(request):
-    return render(request, 'polls/charts.html')
+    labels = ["Hello", "Hi", "What's up?"]
+    data = [2, 3, 4]
+    context = {
+        'labels': labels,
+        'data': data,
+    }
+    print(context['labels'])
+    return render(request, 'polls/charts.html', context)

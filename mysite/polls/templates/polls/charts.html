@@ -47,6 +47,9 @@
     </script>
 </head>
 <body>
+    
+
+
     <div class='container'>
         <div class='row'>
             <div class='col'>
@@ -60,8 +63,13 @@
             </div>
             <div class='col'>
                 <h2>test2</h2>
+                {% for items in context.labels %}
+                    <h3> {{ items.labels }} </h3>    
+                    {% endfor %}
             </div>
         </div>
     </div>
+    
+
 </body>
 </html>

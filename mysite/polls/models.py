@@ -25,3 +25,6 @@ class Choice(models.Model):
 class Chart(models.Model):
     labels = models.CharField(max_length=50)
     data = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.labels
