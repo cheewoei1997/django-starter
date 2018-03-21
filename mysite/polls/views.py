@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from .models import Question, Chart
 from django.template import loader
+import json
 
 
 def index(request):
@@ -32,11 +33,12 @@ def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
 
 def charts(request):
-    labels = ["Hello", "Hi", "What's up?"]
-    data = [2, 3, 4]
+    labels = ["Hello", "Hi", "What's up?", "Ayyyy"]
+    data = [2, 3, 4, 7]
+    labels = map(json.dumps, labels)
+    data = map(json.dumps, data)
     context = {
         'labels': labels,
         'data': data,
     }
-    print(context['labels'])
     return render(request, 'polls/charts.html', context)

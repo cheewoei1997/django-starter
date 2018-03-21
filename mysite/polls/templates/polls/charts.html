@@ -1,75 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <canvas id="myChart" width='200' height='200'></canvas>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <script>
-    function getChart(){
-    var ctx = document.getElementById('myChart');
-    var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'doughnut',
-    // The data for our dataset
-    data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [{
-            label: "My First dataset",
-            data: [10, 10, 5, 2, 20, 30, 45],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    // Configuration options go here
-    options: {
-        title: {
-            display: true,
-            text: 'Your Capital'
-        }
+
+    <style>
+    .chart-container {
+        width: 500px;
+        margin-left: 40px;
+        margin-right: 40px;
     }
-    });
-}
-    </script>
-</head>
-<body>
-    
+    .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    </style>
 
-
-    <div class='container'>
-        <div class='row'>
-            <div class='col'>
     <script>
-    getChart();
-    </script>
-            </div>
+            var a = [];
+            {% for item in labels %}
+                a.push({{ item|safe }});
+            {% endfor %}
+
+            var b = [];
+            {% for item in data %}
+                b.push({{ item|safe }});
+            {% endfor %}
+
+            function getChart(){
+            var ctx = document.getElementById('myChart').getContext('2d');
+
+            var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'doughnut',
         
-            <div class='col'>
-                <h1>test</h1>
-            </div>
-            <div class='col'>
-                <h2>test2</h2>
-                {% for items in context.labels %}
-                    <h3> {{ items.labels }} </h3>    
-                    {% endfor %}
-            </div>
+            // The data for our dataset
+            data: {
+                labels: a,
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)'
+                        ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)'
+                        ],
+                    data: b,
+                }]
+            },
+        
+            // Configuration options go here
+            options: {
+                responsive:true,
+                    legend:{
+                        position:'right'
+                    }
+                }
+        });
+        }
+
+        function getChart2(){
+            var ctx = document.getElementById('myChart2').getContext('2d');
+            var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'doughnut',
+        
+            // The data for our dataset
+            data: {
+                labels: a,
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: b,
+                }]
+            },
+        
+            // Configuration options go here
+            options: {
+                responsive:true,
+                circumference:1.5*Math.PI,
+                rotation:0.75*Math.PI
+                }
+        });
+        }
+        </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="chart-container">
+            <canvas id="myChart" width="200" height="200"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="myChart2" width="200" height="200"></canvas>
         </div>
     </div>
-    
 
+    <script>   
+        getChart();
+        getChart2();
+    </script>
 </body>
 </html>
