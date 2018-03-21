@@ -32,6 +32,8 @@ def results(request, question_id):
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
 
+#View of the charts
+
 def charts(request):
     labels = ["Hello", "Hi", "What's up?", "Ayyyy"]
     data = [2, 3, 4, 7]
