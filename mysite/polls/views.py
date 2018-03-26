@@ -42,24 +42,27 @@ def vote(request, question_id):
 #View of the charts
 
 def charts(request):
+    expenses_value = [30000, 0]
+    cash_flow_value = [35000, 0]
+    passive_income_value = [0, 25000]
     cash_on_hand_labels = ["Fixed Deposit", "Liquid Assets"]
     cash_on_hand_values = [25000, 75000]
-    expenses_and_passive_income = [25000, 30000]
-    cash_flow_value = [35000]
     your_capital_labels = ["Unit Trust", "House", "Shares", "Insurance", "Shares"]
     your_capital_values = [32, 60, 12, 23, 14]
 
+    expenses_value = map(json.dumps, expenses_value)
+    cash_flow_value = map(json.dumps, cash_flow_value)
+    passive_income_value = map(json.dumps, passive_income_value)
     cash_on_hand_labels = map(json.dumps, cash_on_hand_labels)
     cash_on_hand_values = map(json.dumps, cash_on_hand_values)
-    expenses_and_passive_income = map(json.dumps, expenses_and_passive_income)
-    cash_flow_value = map(json.dumps, cash_flow_value)
     your_capital_labels = map(json.dumps, your_capital_labels)
     your_capital_values = map(json.dumps, your_capital_values)
     context = {
+        'expenses_value': expenses_value,
+        'cash_flow_value': cash_flow_value,
+        'passive_income_value': passive_income_value,
         'cash_on_hand_labels': cash_on_hand_labels,
         'cash_on_hand_values': cash_on_hand_values,
-        'expenses_and_passive_income': expenses_and_passive_income,
-        'cash_flow_value': cash_flow_value,
         'your_capital_labels': your_capital_labels,
         'your_capital_values': your_capital_values,
     }

@@ -4,14 +4,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    
     <style>
     .down{
         padding-left: 55px;
     }
     </style>
-
+    
     <script>
         // Start of code to extract data from view 
+            var expenses_value= [];
+            {% for item in expenses_value %}
+                expenses_value.push({{ item|safe }});
+            {% endfor %}
+
+            var cash_flow_value = [];
+            {% for item in cash_flow_value %}
+                cash_flow_value.push({{ item|safe }});
+            {% endfor %}
+
+            var passive_income_value = [];
+            {% for item in passive_income_value %}
+                passive_income_value.push({{ item|safe }});
+            {% endfor %}
+
             var cash_on_hand_labels = [];
             {% for item in cash_on_hand_labels %}
                 cash_on_hand_labels.push({{ item|safe }});
@@ -20,16 +36,6 @@
             var cash_on_hand_values = [];
             {% for item in cash_on_hand_values %}
                 cash_on_hand_values.push({{ item|safe }});
-            {% endfor %}
-
-            var expenses_and_passive_income = [];
-            {% for item in expenses_and_passive_income %}
-                expenses_and_passive_income.push({{ item|safe }});
-            {% endfor %}
-
-            var cash_flow_value = [];
-            {% for item in cash_flow_value %}
-                cash_flow_value.push({{ item|safe }});
             {% endfor %}
 
             var your_capital_labels = [];
@@ -42,10 +48,92 @@
                 your_capital_values.push({{ item|safe }});
             {% endfor %}
 
-        // End
 
-            function getChart(){
+        function getChart(){
             var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'horizontalBar',
+            // The data for our dataset
+            data: {
+                labels: ["",""],
+                datasets: [
+                    //1st data set
+                    {
+                    label: "Expenses",
+                    data: expenses_value,
+                    backgroundColor: [
+                        'rgb(245, 97, 59)',
+                        ],
+                    borderColor: [
+                        'rgba(245, 97, 59, 0.8)'
+                        ],
+                    },
+                    
+                    //2nd data set
+                    {
+                    label: "Cash Flow",
+                    data: cash_flow_value,
+                    backgroundColor: [
+                        'rgb(245, 222, 47)',
+                    ],
+                    borderColor: [
+                        'rgba(245, 222, 47)',
+                    ],                                  
+            },
+                    //3rd data set
+                    {
+                    label: "Passive Income",
+                    data: passive_income_value,
+                    backgroundColor: [
+                        'rgb(169, 245, 47)',
+                        'rgb(169, 245, 47)'
+                    ],
+                    borderColor: [
+                        'rgb(169, 245, 47)',
+                    ],                                 
+                }]
+            },
+        
+            // Configuration options go here
+            options: {
+                responsive:true,
+                fullWidth: true,
+                title: {
+                    display:true,
+                    text: 'Net Cash Flow',
+                    position:'top'
+                },
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                            gridLines: {
+                                display:false
+                            },
+                            ticks:{
+                                    beginAtZero: true
+                                }
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        barThickness : 10,
+                        maxBarThickness: 10,    
+                            gridLines: {
+                                display:false
+                            }
+                    }]
+                },
+                legend:{
+                    position: 'top',
+                        labels:{
+                            boxWidth: 12
+                        }
+                }
+            }
+        });
+        }
+        function getChart2(){
+            var ctx = document.getElementById('myChart2').getContext('2d');
             var chart = new Chart(ctx, {
             // The type of chart we want to create
             type: 'doughnut',
@@ -71,100 +159,22 @@
             options: {
                 responsive:true,
                 cutoutPercentage: 90,
+                fullWidth: true,
                 title: {
                     display:true,
                     text: 'Cash On Hand',
                     position:'top'
                 },
                     legend: {
-                        position:'right',
+                        display: true,
+                        position: 'right',
                             labels: {
-                                boxWidth: 20,
                                 usePointStyle: true
                         }
                     }
                 }
         });
         }
-
-            function getChart2(){
-            var chartData = {
-                datasets: [{
-
-                }]
-            }
-            var ctx = document.getElementById('myChart2').getContext('2d');
-            var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'horizontalBar',
-            // The data for our dataset
-            data: {
-                labels: [],
-                datasets: [
-                    //1st data set
-                    {
-                    label: "Expenses",
-                    data: expenses_and_passive_income,
-                    backgroundColor: [
-                        'rgb(245, 97, 59)',
-                        'rgb(169, 245, 47)'
-                        ],
-                    borderColor: [
-                        'rgba(245, 97, 59, 0.8)'
-                        ],
-                    },
-                    
-                    //2nd data set
-                    {
-                    label: "Cash Flow",
-                    data: cash_flow_value,
-                    backgroundColor: [
-                        'rgb(245, 222, 47)',
-                    ],
-                    borderColor: [
-                        'rgba(245, 222, 47)',
-                    ],                                   
-            },
-
-                    //3rd data set
-                    {
-                    label: "Passive Income",
-                    backgroundColor: [
-                        'rgb(169, 245, 47)',
-                    ],
-                    borderColor: [
-                        'rgb(169, 245, 47)',
-                    ],                                   
-                }]
-            },
-        
-            // Configuration options go here
-            options: {
-                responsive:true,
-                title: {
-                    display:true,
-                    text: 'Net Cash Flow',
-                    position:'top'
-                },
-                scales: {
-                    xAxes: [{
-                        stacked: true,
-                            gridLines: {
-                                display:false
-                            },
-                    }],
-                    yAxes: [{
-                        stacked: true,
-                        barThickness : 30,
-                            gridLines: {
-                                display:false
-                            }
-                    }]
-                }
-            }
-        });
-        }
-
         function getChart3(){
             var ctx = document.getElementById('myChart3').getContext('2d');
             var chart = new Chart(ctx, {
@@ -197,6 +207,7 @@
             // Configuration options go here
             options: {
                 responsive:true,
+                cutoutPercentage: 60,
                 title: {
                     display:true,
                     text: 'Your Capital',
@@ -204,14 +215,12 @@
                 },
                     legend:{
                         position:'right',
+                        align: 'center',
                         labels: {
                                 usePointStyle: true,
+                                fontSize: 11
                         }
                     }
-                },
-                centerText: {
-                    display:true,
-                    text:'Throw'
                 }
             });
         }
@@ -219,21 +228,37 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-lg-4 col-sm-12">
             <canvas id="myChart"></canvas>
-            <p class="down">hi</p>
+            <p class="down"></p>
             </div>
             <div class="col-lg-4 col-sm-12">
-            <canvas id="myChart2"></canvas>
-            <p class="down">hi</p>
+            <canvas id="myChart2"  style="height: 30px; width: 60px;"></canvas>
+            <p class="down"></p>
             </div>
             <div class="col-lg-4 col-sm-12">
-            <canvas id="myChart3"></canvas>
-            <p class="down">hi</p>
+            <canvas id="myChart3" style="height: 30px; width: 60px;"></canvas>
+            <p class="down"></p>
             </div>
         </div>
+    </div>
+
+    <div class="d-none d-xl-block" style="z-index: 2; position: absolute; top: 13.5%; left: 43.75%;">
+        xl halo
+    </div>
+    <div class="d-none d-lg-block d-xl-none" style="z-index: 2; position: absolute; top: 12.5%; left: 14%;">
+        lg halo
+    </div>
+    <div class="d-none d-md-block d-lg-none" style="z-index: 2; position: absolute; top: 38.5%; left: 40.5%;">
+        md halo
+    </div>
+    <div class="d-none d-sm-block d-md-none" style="z-index: 2; position: absolute; top: 22.5%; left: 35.75%;">
+        small halo
+    </div>
+    <div class="d-block d-sm-none" style="font-size: 13px; position: absolute; top: 18.5em; left: 5em;">
+        xs halo
     </div>
 
     <script>   
@@ -243,3 +268,4 @@
     </script>
 </body>
 </html>
+
