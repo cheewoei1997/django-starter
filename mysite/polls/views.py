@@ -1,46 +1,66 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 # Create your views here.
-from django.http import HttpResponse, Http404
-from .models import Question, Chart
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from .models import Question, Choice, Chart
 from django.template import loader
+from django.urls import reverse
+from django.views import generic
 import json
 
 
-def index(request):
-    # return HttpResponse("Hello, world.  You're at the polls index.")
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    # template = loader.get_template('polls/index.html')
-    context = {
-        'latest_question_list': latest_question_list,
-    }
-    # return HttpResponse(template.render(context, request))
-    return render(request, 'polls/index.html', context)
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+    
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by('-pub_date')[:5]
 
-def detail(request, question_id):
-    # return HttpResponse("You're looking at question %s." % question_id)
-    try:
-        question = Question.objects.get(pk=question_id)
-    except  Question.DoesNotExist:
-        raise Http404("Question does not exist.")
-    return render(request, 'polls/detail.html', {'question': question})
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
 
-def results(request, question_id):
-    response = "You're looking at results of question %s."
-    return HttpResponse(response % question_id)
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 #View of the charts
 
 def charts(request):
-    labels = ["Hello", "Hi", "What's up?", "Ayyyy"]
-    data = [2, 3, 4, 7]
-    labels = map(json.dumps, labels)
-    data = map(json.dumps, data)
+    cash_on_hand_labels = ["Fixed Deposit", "Liquid Assets"]
+    cash_on_hand_values = [25000, 75000]
+    expenses_and_passive_income = [25000, 30000]
+    cash_flow_value = [35000]
+    your_capital_labels = ["Unit Trust", "House", "Shares", "Insurance", "Shares"]
+    your_capital_values = [32, 60, 12, 23, 14]
+
+    cash_on_hand_labels = map(json.dumps, cash_on_hand_labels)
+    cash_on_hand_values = map(json.dumps, cash_on_hand_values)
+    expenses_and_passive_income = map(json.dumps, expenses_and_passive_income)
+    cash_flow_value = map(json.dumps, cash_flow_value)
+    your_capital_labels = map(json.dumps, your_capital_labels)
+    your_capital_values = map(json.dumps, your_capital_values)
     context = {
-        'labels': labels,
-        'data': data,
+        'cash_on_hand_labels': cash_on_hand_labels,
+        'cash_on_hand_values': cash_on_hand_values,
+        'expenses_and_passive_income': expenses_and_passive_income,
+        'cash_flow_value': cash_flow_value,
+        'your_capital_labels': your_capital_labels,
+        'your_capital_values': your_capital_values,
     }
     return render(request, 'polls/charts.html', context)
