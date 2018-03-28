@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    {% load staticfiles %}
+    <script src="{% static "/node_modules/chart.js/dist/Chart.js" %}"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     
@@ -38,14 +39,19 @@
                 cash_on_hand_values.push({{ item|safe }});
             {% endfor %}
 
-            var your_capital_labels = [];
-            {% for item in your_capital_labels %}
-                your_capital_labels.push({{ item|safe }});
+            var questions = [];
+            {% for item in questions %}
+                questions.push({{ item|safe }});
             {% endfor %}
 
-            var your_capital_values = [];
-            {% for item in your_capital_values %}
-                your_capital_values.push({{ item|safe }});
+            var choices = [];
+            {% for item in choices %}
+                choices.push({{ item|safe }});
+            {% endfor %}
+
+            var votes = [];
+            {% for item in votes %}
+                votes.push({{ item|safe }});
             {% endfor %}
 
 
@@ -140,7 +146,7 @@
         
             // The data for our dataset
             data: {
-                labels: cash_on_hand_labels,
+                labels: questions,
                 datasets: [{
                     label: "My First dataset",
                     backgroundColor: [
@@ -183,9 +189,9 @@
         
             // The data for our dataset
             data: {
-                labels: your_capital_labels,
+                labels: choices,
                 datasets: [{
-                    label: "My First dataset",
+                    label: "Chosen Answers",
                     backgroundColor: [
                         'rgb(72, 116, 246)',
                         'rgb(84, 31, 181)',
@@ -200,7 +206,7 @@
                         'rgb(254, 156, 62)',
                         'rgb(238, 74, 85)'
                         ],
-                    data: your_capital_values,
+                    data: votes,
                 }]
             },
         
@@ -210,7 +216,7 @@
                 cutoutPercentage: 60,
                 title: {
                     display:true,
-                    text: 'Your Capital',
+                    text: 'Chosen Answers',
                     position:'top'
                 },
                     legend:{
