@@ -124,4 +124,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/home/cheewoei/GitHub/django-starter/mysite/static/'
+STATIC_ROOT = '/home/cheewoei/GitHub/django-starter/mysite/polls/static'
