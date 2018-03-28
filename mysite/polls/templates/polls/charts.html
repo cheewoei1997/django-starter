@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {% load staticfiles %}
-    <script src="{% static "/node_modules/chart.js/dist/Chart.js" %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     
@@ -39,19 +38,14 @@
                 cash_on_hand_values.push({{ item|safe }});
             {% endfor %}
 
-            var questions = [];
-            {% for item in questions %}
-                questions.push({{ item|safe }});
+            var your_capital_labels = [];
+            {% for item in your_capital_labels %}
+                your_capital_labels.push({{ item|safe }});
             {% endfor %}
 
-            var choices = [];
-            {% for item in choices %}
-                choices.push({{ item|safe }});
-            {% endfor %}
-
-            var votes = [];
-            {% for item in votes %}
-                votes.push({{ item|safe }});
+            var your_capital_values = [];
+            {% for item in your_capital_values %}
+                your_capital_values.push({{ item|safe }});
             {% endfor %}
 
 
@@ -146,7 +140,7 @@
         
             // The data for our dataset
             data: {
-                labels: questions,
+                labels: cash_on_hand_labels,
                 datasets: [{
                     label: "My First dataset",
                     backgroundColor: [
@@ -189,9 +183,9 @@
         
             // The data for our dataset
             data: {
-                labels: choices,
+                labels: your_capital_labels,
                 datasets: [{
-                    label: "Chosen Answers",
+                    label: "My First dataset",
                     backgroundColor: [
                         'rgb(72, 116, 246)',
                         'rgb(84, 31, 181)',
@@ -206,7 +200,7 @@
                         'rgb(254, 156, 62)',
                         'rgb(238, 74, 85)'
                         ],
-                    data: votes,
+                    data: your_capital_values,
                 }]
             },
         
@@ -216,7 +210,7 @@
                 cutoutPercentage: 60,
                 title: {
                     display:true,
-                    text: 'Chosen Answers',
+                    text: 'Your Capital',
                     position:'top'
                 },
                     legend:{
@@ -251,19 +245,19 @@
         </div>
     </div>
 
-    <div class="d-none d-xl-block" style="z-index: 2; position: absolute; top: 5.75em; left: 43.75%;">
+    <div class="d-none d-xl-block" style="z-index: 2; position: absolute; top: 13.5%; left: 43.75%;">
         xl halo
     </div>
-    <div class="d-none d-lg-block d-xl-none" style="font-size: 12px; z-index: 2; position: absolute; top: 6.5em; left: 43%;">
+    <div class="d-none d-lg-block d-xl-none" style="z-index: 2; position: absolute; top: 12.5%; left: 14%;">
         lg halo
     </div>
-    <div class="d-none d-md-block d-lg-none" style="z-index: 2; position: absolute; top: 33.75em; left: 39.5%;">
+    <div class="d-none d-md-block d-lg-none" style="z-index: 2; position: absolute; top: 38.5%; left: 40.5%;">
         md halo
     </div>
-    <div class="d-none d-sm-block d-md-none" style="font-size: 13px; z-index: 2; position: absolute; top: 31.5em; left: 36%;">
+    <div class="d-none d-sm-block d-md-none" style="z-index: 2; position: absolute; top: 22.5%; left: 35.75%;">
         small halo
     </div>
-    <div class="d-block d-sm-none" style="font-size: 12px; position: absolute; top: 21.75em; left: 8em;">
+    <div class="d-block d-sm-none" style="font-size: 13px; position: absolute; top: 18.5em; left: 5em;">
         xs halo
     </div>
 
